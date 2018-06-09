@@ -76,7 +76,7 @@ export default class Insta extends React.Component {
 
   render() {  
     return ( 
-    <FlatList style={styles.container}
+    <FlatList 
       keyExtractor={item => item.id}
       data={this.state.fotos}
       renderItem={ ({item}) =>
@@ -91,11 +91,4 @@ export default class Insta extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-    container: {
-      marginTop: 10,
-    },
-  });
-
-AppRegistry.registerComponent('Insta', () => Login);
-
+AppRegistry.registerComponent('Insta', () => Login)

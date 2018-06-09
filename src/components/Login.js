@@ -1,10 +1,25 @@
 import React from 'react';
 import { AppRegistry ,StyleSheet, Text, View, Image, Dimensions, ScrollView, 
-    FlatList, TouchableOpacity, marginTop,AsyncStorage, FlexAlignType, Button, marginLeft,color, borderColor, borderRadius, marginBotton, TextInput, } from 'react-native';
+    FlatList, TouchableOpacity, marginTop, AsyncStorage, FlexAlignType, Button, marginLeft,color, borderColor, borderRadius, marginBotton, TextInput, } from 'react-native';
 
 const width = Dimensions.get('screen').width;
 
 export default class Login extends React.Component {
+
+    constructor() {
+      super();
+      this.state = {
+        usuario: '',
+        senha: '',
+        mensagem: ''
+      }
+
+    }
+
+
+
+
+
 
    efetuaLogin () {
       
@@ -37,9 +52,8 @@ export default class Login extends React.Component {
             AsyncStorage.setItem('token', token);
             AsyncStorage.setItem('usuario', this.state.usuario);
 
-            return AsyncStorage.getItem('token');
        } )
-   
+        .catch(e => this.setState({mensagem: e.message}))
     }
    
    
@@ -47,7 +61,7 @@ export default class Login extends React.Component {
         return (
             <View style={styles.estilo}>
 
-                <Text style={styles.titulo}>Instagrado</Text>
+                <Text style={styles.titulo}>Instafake</Text>
             <View style={styles.form}>
               
                 <TextInput style={styles.input}
@@ -68,6 +82,9 @@ export default class Login extends React.Component {
             
             <Button title="Login" onPress={this.efetuaLogin.bind(this)}/>
             </View>
+              <Text style={styles.mensagem}>
+                  {this.state.mensagem}
+              </Text>
             </View>
         );
     }
@@ -93,7 +110,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
 
     },
+    mensagem: {
+      marginTop: 15,
+      color: '#e74c3c',
+    }
     
 })
-
-
