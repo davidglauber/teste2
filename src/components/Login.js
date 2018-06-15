@@ -24,7 +24,7 @@ export default class Login extends React.Component {
    efetuaLogin () {
       
     
-    const uri = "http://localhost:8080/api/public/login";
+    const uri = "https://instalura-api.herokuapp.com/api/public/login";
     
    
    const requestInfo = {
@@ -59,9 +59,11 @@ export default class Login extends React.Component {
    
     render() {
         return (
-            <View style={styles.estilo}>
-
-                <Text style={styles.titulo}>Instafake</Text>
+          
+      
+         <View style={styles.estilo}>
+         
+                <Text style={styles.titulo}>InstaFake</Text>
             <View style={styles.form}>
               
                 <TextInput style={styles.input}
@@ -69,24 +71,30 @@ export default class Login extends React.Component {
                     underlineColorAndroid='transparent'
                     onChangeText={texto => this.setState({usuario: texto})}
                     autoCapitalize='none'/>
-
-
                 
 
+                 
+                
                 <TextInput style={styles.input}
                 placeholder="Senha..."
                 underlineColorAndroid='transparent'
                 onChangeText={texto => this.setState({senha: texto})}
                 autoCapitalize='none'
                 secureTextEntry={true}/>    
-            
-            <Button title="Login" onPress={this.efetuaLogin.bind(this)}/>
+            <Text style={styles.espaco}>       </Text>
+              <Button title="Login" onPress={this.efetuaLogin.bind(this)}/>
             </View>
               <Text style={styles.mensagem}>
                   {this.state.mensagem}
               </Text>
+              
             </View>
-        );
+    
+           
+       
+        
+      ); 
+        
     }
 }
 
@@ -94,8 +102,9 @@ const styles = StyleSheet.create({
     estilo: {
     justifyContent: 'center',
     flex: 1,
-    alignItems: 'center'
-    },
+    alignItems: 'center',
+    backgroundColor: 'yellow'
+  },
     form: {
         width: width * 0.8,
     },
@@ -108,11 +117,20 @@ const styles = StyleSheet.create({
         fontSize: 20,
         alignItems: 'center',
         fontWeight: 'bold',
+        color: 'black',
+        
 
     },
     mensagem: {
       marginTop: 15,
       color: '#e74c3c',
-    }
+    },
+  espaco : {
+    margin: 10
+
+  }
+  
+
     
-})
+    
+  })

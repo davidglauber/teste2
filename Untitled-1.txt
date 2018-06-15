@@ -91,6 +91,4 @@ export default class Insta extends React.Component {
   }
 }
 
-
-
-AppRegistry.registerComponent('Insta', () => Login);
+AppRegistry.registerComponent('Insta', () => Login)
