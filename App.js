@@ -42,7 +42,7 @@ const AppNavigator = createStackNavigator({
     tela1: {
         screen: Login,
         navigationOptions:  {
-            title: 'Login',
+            title: 'Tela de Login',
             headerLeft: null,
             headerStyle: {
                 backgroundColor: 'yellow'
@@ -52,8 +52,12 @@ const AppNavigator = createStackNavigator({
     tela2: {
         screen: Post,
         navigationOptions:  {
-            title: 'Posts',
-            headerLeft: null
+            title: 'Tela de Posts',
+            headerLeft: null,
+            headerStyle: {
+                backgroundColor: 'yellow'
+            } 
+            
         }    
     },
 
