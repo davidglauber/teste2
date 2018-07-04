@@ -58,6 +58,7 @@ export default class Login extends React.Component {
    
    
     render() {
+        
         return (
           
       
@@ -82,7 +83,7 @@ export default class Login extends React.Component {
                 autoCapitalize='none'
                 secureTextEntry={true}/>    
             <Text style={styles.espaco}>       </Text>
-              <Button title="Login" onPress={this.efetuaLogin.bind(this)}/>
+              <Button title="Login" onPress={() => this.props.navigation.navigate('tela2') }/>
             </View>
               <Text style={styles.mensagem}>
                   {this.state.mensagem}

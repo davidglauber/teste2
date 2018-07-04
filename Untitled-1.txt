@@ -1,94 +1,140 @@
-import React from 'react';
-import { AppRegistry ,StyleSheet, Text, View, Image, Dimensions, ScrollView, FlatList, TouchableOpacity, borderColor, borderRadius, Platform, PlatformIOS } from 'react-native';
 
-import Post from './src/components/Post';
-import Login from './src/components/Login';
- 
-export default class Insta extends React.Component {
- 
-  constructor() {
-    super();
-    this.state = {
-      fotos: []
+import React from 'react';
+import { AppRegistry ,StyleSheet, Text, View, Image, Dimensions, ScrollView, 
+    FlatList, TouchableOpacity, marginTop, AsyncStorage, FlexAlignType, Button, marginLeft,color, borderColor, borderRadius, marginBotton, TextInput, } from 'react-native';
+import Post from './src/components/Post'
+import {createStackNavigator} from 'react-navigation';     
+const width = Dimensions.get('screen').width;
+
+export default class Login extends React.Component {
+
+    constructor() {
+      super();
+      this.state = {
+        usuario: '',
+        senha: '',
+        mensagem: ''
+      }
+
     }
 
-  }
- 
-  componentDidMount() {
-    fetch('https://instalura-api.herokuapp.com/api/public/fotos/rafael')
-    .then(resposta => resposta.json())
-    .then(json => this.setState({fotos: json}))
-  }
- 
-  like(idFoto) {
-    const foto = this.state.fotos.find(foto => foto.id === idFoto )
+
+
     
-     let novaLista = []
-     if(!foto.likeada) {
-       novaLista =  [
-         ...foto.likers,
-         {login: 'meuUsuario'}
-       ]
-     } else {
-       novaLista = foto.likers.filter(liker => {
-         return liker.login !== 'meuUsuario'
+
+
+
+   efetuaLogin () {
+      
+    
+    const uri = "https://instalura-api.herokuapp.com/api/public/login";
+    
+   
+   const requestInfo = {
+       method: 'POST',
+       body: JSON.stringify({
+           login: this.state.usuario,
+           senha: this.state.senha
+       }),
+
+       headers: new Headers({
+           'Content-type': 'application/json'
        })
- 
- 
-     }
-     const fotoAtualizada = {
-     ...foto , 
-     likeada: !foto.likeada,
-     likers: novaLista  
    }
-     
-     const fotos = this.state.fotos
-      .map(foto => foto.id === fotoAtualizada.id ? fotoAtualizada: foto)
-     this.setState({fotos})
-   }
+   
+   
+   
+         fetch(uri, requestInfo) 
+       .then(response =>{
+            if(response.ok)
+                return response.text();
 
-   adicionaComentario(idFoto, valorComentario, inputComentario) {
-    if(valorComentario === '')
-     return;
-     
-    const foto = this.state.fotos.find(foto => foto.id === idFoto)
+        throw new Error("Não foi possível efetuar o Login :(");
+       })
+       .then(token => {
+            AsyncStorage.setItem('token', token);
+            AsyncStorage.setItem('usuario', this.state.usuario);
 
+       } )
+        .catch(e => this.setState({mensagem: e.message}))
+    }
+   
+   
+    render() {
+        return (
+          
+            <View style={styles.estilo}>
+         
+            <Text style={styles.titulo}>InstaFake</Text>
+        <View style={styles.form}>
+          
+            <TextInput style={styles.input}
+                placeholder="Usuário"
+                underlineColorAndroid='transparent'
+                onChangeText={texto => this.setState({usuario: texto})}
+                autoCapitalize='none'/>
+            
 
-
-     const novaLista = [...foto.comentarios, {
-       id: valorComentario,
-       login: 'meuUsuario',
-       texto: valorComentario
- 
-     }]; 
+             
+            
+            <TextInput style={styles.input}
+            placeholder="Senha..."
+            underlineColorAndroid='transparent'
+            onChangeText={texto => this.setState({senha: texto})}
+            autoCapitalize='none'
+            secureTextEntry={true}/>    
+        <Text style={styles.espaco}>       </Text>
+          <Button title="Login" onPress={this.efetuaLogin.bind(this)} />
+        </View>
+          <Text style={styles.mensagem}>
+              {this.state.mensagem}
+          </Text>
+         <AppStackNavigator/> 
+        </View>
+  
+           
+       
     
-    const fotoAtualizada = {
-      ...foto,
-      comentarios: novaLista
-    } 
- 
-    const fotos = this.state.fotos
-      .map(foto => foto.id === fotoAtualizada.id ? fotoAtualizada : foto)
-
-    this.setState({fotos});
-    inputComentario.clear();
-   }
-
-  render() {  
-    return ( 
-    <FlatList 
-      keyExtractor={item => item.id}
-      data={this.state.fotos}
-      renderItem={ ({item}) =>
-    <Post foto={item}
-          likeCallback={this.like.bind(this)}
-          comentarioCallback={this.adicionaComentario.bind(this)}
-          />
-      }
-    />
- 
-    );
-  }
+      ); 
+        
+    }
 }
 
-AppRegistry.registerComponent('Insta', () => Login)
+const AppStackNavigator = createStackNavigator({
+    Post: Post,
+
+})
+
+const styles = StyleSheet.create({
+    estilo: {
+    justifyContent: 'center',
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: 'yellow'
+  },
+    form: {
+        width: width * 0.8,
+    },
+    input: {
+        height: 40,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+    },
+    titulo: {
+        fontSize: 20,
+        alignItems: 'center',
+        fontWeight: 'bold',
+        color: 'black',
+        
+
+    },
+    mensagem: {
+      marginTop: 15,
+      color: '#e74c3c',
+    },
+  espaco : {
+    margin: 10,
+},
+  
+  
+})
